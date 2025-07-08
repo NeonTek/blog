@@ -24,6 +24,11 @@ export const metadata: Metadata = {
   },
   description: "Blog by NeonTek sharing insights on various topics",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://blog.neotek.co.ke"),
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  }
 }
 
 export default function RootLayout({
