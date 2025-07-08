@@ -9,7 +9,7 @@ import { LayoutDashboard, FileText, FolderOpen, Mail, BarChart3, LogOut } from "
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen pt-16">
       <aside className="w-64 bg-muted/40 border-r hidden md:block">
         <div className="p-6">
           <h2 className="text-lg font-bold mb-6">Admin Panel</h2>
