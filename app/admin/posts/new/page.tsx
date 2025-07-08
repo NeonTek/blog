@@ -1,12 +1,10 @@
 /*
 John 1:5
-The light shines in darkness, but the darkness has not understood it 
+The light shines in darkness, but the darkness has not understood it
 */
-"use client"
-
 import { Suspense } from "react"
 import { getCategories } from "@/lib/actions/category-actions"
-import PostEditorC from "@/components/editor/rich-text-editor"
+import PostEditorC from "@/components/editor/rich-text-editor" // This is your Client Component
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
@@ -43,12 +41,42 @@ function EditorSkeleton() {
   )
 }
 
-async function PostEditor() {
-  try {
-    const categories = await getCategories()
+export default async function NewPostPage() {
+  let categoriesData = []
+  let categoriesError: string | null = null
 
-    if (!categories || categories.length === 0) {
-      return (
+  try {
+    categoriesData = await getCategories() 
+  } catch (error) {
+    console.error("Error loading categories:", error)
+    categoriesError = "Failed to load categories."
+  }
+
+  if (categoriesError) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">Create New Post</h1>
+          <p className="text-muted-foreground mt-2">Fill in the details below to create a new blog post.</p>
+        </div>
+        <Card className="w-full">
+          <CardContent className="pt-6">
+            <div className="text-center py-8">
+              <p className="text-red-500 mb-4">{categoriesError} Please try again.</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  if (!categoriesData || categoriesData.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">Create New Post</h1>
+          <p className="text-muted-foreground mt-2">Fill in the details below to create a new blog post.</p>
+        </div>
         <Card className="w-full">
           <CardContent className="pt-6">
             <div className="text-center py-8">
@@ -61,28 +89,10 @@ async function PostEditor() {
             </div>
           </CardContent>
         </Card>
-      )
-    }
-
-    return <PostEditorC categories={categories} />
-  } catch (error) {
-    console.error("Error loading categories:", error)
-    return (
-      <Card className="w-full">
-        <CardContent className="pt-6">
-          <div className="text-center py-8">
-            <p className="text-red-500 mb-4">Error loading categories. Please try again.</p>
-            <button onClick={() => window.location.reload()} className="text-primary hover:underline">
-              Reload page
-            </button>
-          </div>
-        </CardContent>
-      </Card>
+      </div>
     )
   }
-}
 
-export default function NewPostPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -91,7 +101,7 @@ export default function NewPostPage() {
       </div>
 
       <Suspense fallback={<EditorSkeleton />}>
-        <PostEditor />
+        <PostEditorC categories={categoriesData} />
       </Suspense>
     </div>
   )
