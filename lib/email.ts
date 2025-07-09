@@ -7,7 +7,9 @@ import nodemailer from "nodemailer"
 // Email configuration
 export function createEmailTransporter() {
   return nodemailer.createTransport({
-    service: "neontek.co.ke",
+    host: "mail.neontek.co.ke",
+    port: 465,
+    secure: true, 
     auth: {
       user: "blog@neontek.co.ke",
       pass: process.env.EMAIL_PASSWORD, 
