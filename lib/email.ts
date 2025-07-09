@@ -7,10 +7,10 @@ import nodemailer from "nodemailer"
 // Email configuration
 export function createEmailTransporter() {
   return nodemailer.createTransport({
-    service: "gmail",
+    service: "neontek.co.ke",
     auth: {
-      user: "gtechong72@gmail.com",
-      pass: "rorgewjlegiwywje",
+      user: "blog@neontek.co.ke",
+      pass: process.env.EMAIL_PASSWORD, 
     },
   })
 }
@@ -33,7 +33,7 @@ export async function sendEmail({
     await transporter.verify()
 
     const mailOptions = {
-      from: '"George Ongoro Blog" <gtechong72@gmail.com>',
+      from: '"NeonTek Blog" <blog@neontek.co.ke>',
       to,
       subject,
       ...(html && { html }),
@@ -71,7 +71,7 @@ export async function sendBulkEmail({
     for (const email of emails) {
       try {
         const mailOptions = {
-          from: '"George Ongoro Blog" <gtechong72@gmail.com>',
+          from: '"NeonTek Blog" <blog@neontek.co.ke>',
           to: email,
           subject,
           ...(html && { html }),

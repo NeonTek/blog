@@ -1,31 +1,41 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState, useEffect, useCallback, useRef } from "react"
-import dynamic from "next/dynamic"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
-import { useToast } from "@/hooks/use-toast"
-import { useRouter } from "next/navigation"
-import { createPost, updatePost } from "@/lib/actions/post-actions"
-import { Loader2, AlertCircle } from "lucide-react"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { marked } from "marked" 
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import dynamic from "next/dynamic";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { createPost, updatePost } from "@/lib/actions/post-actions";
+import { Loader2, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { marked } from "marked";
+import TurndownService from "turndown"; 
+
+import type { ReactQuillProps } from 'react-quill';
+import type { Quill } from 'quill';// For the Quill editor instance type
+
+
+const turndownService = new TurndownService();
+
+type ReactQuillRef = {
+  getEditor(): Quill; 
+  
+} | null;
 
 
 const ReactQuill = dynamic(
-  () => {
-    
+  async () => {
     if (typeof window !== "undefined") {
-      require("react-quill/dist/quill.snow.css")
-      return import("react-quill").then((mod) => mod.default)
+      require("react-quill/dist/quill.snow.css");
     }
-    return Promise.resolve(null)
+    const { default: RQ } = await import("react-quill");
+    return RQ; // Do not wrap with React.forwardRef
   },
   {
     ssr: false,
@@ -38,7 +48,7 @@ const ReactQuill = dynamic(
       </div>
     ),
   }
-)
+);
 
 
 const modules = {
@@ -97,13 +107,15 @@ export default function PostEditorC({ post, categories: initialCategories }: Pos
   const [coverImage, setCoverImage] = useState(post?.coverImage || "")
   const [published, setPublished] = useState(post?.published || false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [editorMode, setEditorMode] = useState<"rich-text" | "markdown">("rich-text") // New state for editor mode
+  const [editorMode] = useState<"markdown">("markdown") // New state for editor mode
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [categories, setCategories] = useState<Category[]>(initialCategories || [])
   const [categoriesLoading, setCategoriesLoading] = useState(!initialCategories)
   const [categoriesError, setCategoriesError] = useState<string | null>(null)
+  const [slugManuallyEdited, setSlugManuallyEdited] = useState(false) // New state for slug editing
 
-  const quillRef = useRef<any>(null)
+
+  const quillRef = useRef<ReactQuillRef>(null) 
   const { toast } = useToast()
   const router = useRouter()
 
@@ -112,13 +124,9 @@ export default function PostEditorC({ post, categories: initialCategories }: Pos
     if (post?.content) {
       
       const looksLikeHtml = /<[a-z][\s\S]*>/i.test(post.content)
-      setEditorMode(looksLikeHtml ? "rich-text" : "markdown")
+      // setEditorMode(looksLikeHtml ? "rich-text" : "markdown")
       
-      if (!looksLikeHtml) {
-        setContent(post.content) 
-      } else {
-        setContent(post.content) // Keep as HTML for Rich Text Editor
-      }
+      setContent(post.content);
     }
   }, [post])
 
@@ -131,7 +139,7 @@ export default function PostEditorC({ post, categories: initialCategories }: Pos
           setCategoriesError(null)
 
           const response = await fetch("/api/categories")
-          const result = await response.json()
+          const result = await (response).json() 
 
           if (result.success) {
             setCategories(result.data)
@@ -152,38 +160,22 @@ export default function PostEditorC({ post, categories: initialCategories }: Pos
 
   // Generate slug from title
   useEffect(() => {
-    if (!post && title) {
+    if (!post && title && !slugManuallyEdited) {
       const generatedSlug = title
         .toLowerCase()
-        .replace(/[^\w\s]/gi, "")
+        .replace(/[^\w\s-]/gi, "") 
         .replace(/\s+/g, "-")
         .substring(0, 50)
       setSlug(generatedSlug)
     }
-  }, [title, post])
+  }, [title, post, slugManuallyEdited])
 
-  // Convert HTML to Markdown (basic conversion for switching)
-  const convertHtmlToMarkdown = useCallback((html: string): string => {
-
-    let markdown = html
-      .replace(/<br\s*\/?>/gi, "\n") // Newlines
-      .replace(/<p>/gi, "")
-      .replace(/<\/p>/gi, "\n\n") // Paragraphs
-      .replace(/<strong>(.*?)<\/strong>/gi, "**$1**") // Bold
-      .replace(/<em>(.*?)<\/em>/gi, "*$1*") // Italic
-      .replace(/<ul>/gi, "")
-      .replace(/<\/ul>/gi, "")
-      .replace(/<li>/gi, "- ")
-      .replace(/<\/li>/gi, "\n")
-      .replace(/<[^>]*>/g, "") // Strip any remaining HTML tags
-      .replace(/&amp;/g, "&")
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">")
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
-      .trim()
-    return markdown
-  }, [])
+  // Handle manual slug changes
+  const handleSlugChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSlug(e.target.value)
+    setSlugManuallyEdited(true) // Mark as manually edited
+    if (errors.slug) setErrors((prev) => ({ ...prev, slug: "" }))
+  }, [errors.slug])
 
   // Handle content change based on editor mode
   const handleContentChange = useCallback(
@@ -198,28 +190,16 @@ export default function PostEditorC({ post, categories: initialCategories }: Pos
     [errors.content]
   )
 
-  // Toggle editor mode
-  const toggleEditorMode = useCallback(() => {
-    if (editorMode === "rich-text") {
-      // Switching to Markdown: convert current HTML content to Markdown
-      setContent(convertHtmlToMarkdown(content))
-      setEditorMode("markdown")
-    } else {
-      // Switching to Rich Text: convert current Markdown content to HTML
-      setContent(marked.parse(content) as string)
-      setEditorMode("rich-text")
-    }
-  }, [editorMode, content, convertHtmlToMarkdown])
-
   const validateForm = useCallback(() => {
     const newErrors: Record<string, string> = {}
 
     if (!title.trim()) newErrors.title = "Title is required"
     if (!slug.trim()) newErrors.slug = "Slug is required"
-    // Content validation: If in markdown mode, check content directly. If in rich text, check after parsing.
-    const currentContent = editorMode === "markdown" ? content.trim() : marked.parse(content).trim()
-    if (!currentContent || currentContent === "<p><br></p>")
-      newErrors.content = "Content is required"
+
+    // Only check markdown content
+    const currentContentProcessed = content.trim();
+    if (!currentContentProcessed) newErrors.content = "Content is required"
+
     if (!excerpt.trim()) newErrors.excerpt = "Excerpt is required"
     if (!category) newErrors.category = "Category is required"
     if (!coverImage.trim()) newErrors.coverImage = "Cover image URL is required"
@@ -231,7 +211,7 @@ export default function PostEditorC({ post, categories: initialCategories }: Pos
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
-  }, [title, slug, content, excerpt, category, coverImage, editorMode])
+  }, [title, slug, content, excerpt, category, coverImage])
 
   const isValidUrl = (string: string) => {
     try {
@@ -257,8 +237,8 @@ export default function PostEditorC({ post, categories: initialCategories }: Pos
     setIsSubmitting(true)
 
     try {
-      // When saving, ensure content is always stored as HTML
-      const finalContentToSave = editorMode === "markdown" ? (marked.parse(content) as string) : content
+      // When saving, always convert markdown to HTML
+      const finalContentToSave = marked.parse(content) as string
 
       const postData = {
         title: title.trim(),
@@ -268,6 +248,7 @@ export default function PostEditorC({ post, categories: initialCategories }: Pos
         category,
         coverImage: coverImage.trim(),
         published,
+        publishedAt: new Date().toISOString(), 
       }
 
       if (post?._id) {
@@ -296,11 +277,25 @@ export default function PostEditorC({ post, categories: initialCategories }: Pos
     }
   }
 
-  const retryLoadCategories = () => {
+  const retryLoadCategories = useCallback(async () => {
     setCategoriesError(null)
     setCategoriesLoading(true)
-    window.location.reload()
-  }
+    try {
+      const response = await fetch("/api/categories")
+      const result = await response.json()
+
+      if (result.success) {
+        setCategories(result.data)
+      } else {
+        setCategoriesError("Failed to load categories")
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error)
+      setCategoriesError("Failed to load categories")
+    } finally {
+      setCategoriesLoading(false)
+    }
+  }, [])
 
   if (categoriesError) {
     return (
@@ -381,10 +376,7 @@ export default function PostEditorC({ post, categories: initialCategories }: Pos
             <Input
               id="slug"
               value={slug}
-              onChange={(e) => {
-                setSlug(e.target.value)
-                if (errors.slug) setErrors((prev) => ({ ...prev, slug: "" }))
-              }}
+              onChange={handleSlugChange} 
               placeholder="post-slug"
               className={errors.slug ? "border-red-500" : ""}
             />
@@ -451,7 +443,7 @@ export default function PostEditorC({ post, categories: initialCategories }: Pos
                   className="w-full max-h-40 object-cover rounded-md"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement
-                    target.style.display = "none"
+                    target.style.display = "none" 
                   }}
                 />
               </div>
@@ -461,33 +453,15 @@ export default function PostEditorC({ post, categories: initialCategories }: Pos
           <div className="space-y-2">
             <div className="flex justify-between items-center mb-2">
               <Label htmlFor="content">Content *</Label>
-              <Button type="button" onClick={toggleEditorMode} variant="outline" size="sm">
-                Switch to {editorMode === "rich-text" ? "Markdown" : "Rich Text"}
-              </Button>
             </div>
             <div className="min-h-[300px]">
-              {editorMode === "rich-text" ? (
-                // Rich Text Editor (ReactQuill)
-                <ReactQuill
-                  ref={quillRef}
-                  value={content} // Quill expects HTML
-                  onChange={handleContentChange}
-                  modules={modules}
-                  formats={formats}
-                  placeholder="Write your post content here..."
-                  theme="snow"
-                  className={`${errors.content ? "border-red-500" : ""}`}
-                />
-              ) : (
-                // Markdown Editor (Textarea)
-                <Textarea
-                  value={content} // Textarea expects raw string (Markdown)
-                  onChange={(e) => handleContentChange(e.target.value)}
-                  placeholder="Write your post content here using Markdown..."
-                  className={`min-h-[300px] ${errors.content ? "border-red-500" : ""}`}
-                  rows={15}
-                />
-              )}
+              <Textarea
+                value={content} // Textarea expects raw string (Markdown)
+                onChange={(e) => handleContentChange(e.target.value)}
+                placeholder="Write your post content here using Markdown..."
+                className={`min-h-[300px] ${errors.content ? "border-red-500" : ""}`}
+                rows={15}
+              />
             </div>
             {errors.content && <p className="text-sm text-red-500">{errors.content}</p>}
           </div>

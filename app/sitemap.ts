@@ -8,7 +8,7 @@ import Post from "@/lib/models/post"
 import Category from "@/lib/models/category"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://blog.ongoro.top"
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://blog.neontek.co.ke"
 
   // Base routes
   const routes = ["", "/about", "/contact"].map((route) => ({
