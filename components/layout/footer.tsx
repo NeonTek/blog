@@ -14,6 +14,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { SuggestedPages } from "./suggested-pages";
+import NewsletterSubscription from "@/components/newsletter/newsletter-subscription";
 
 export default function Footer() {
   return (
@@ -131,6 +132,11 @@ export default function Footer() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Newsletter Full Width Row */}
+        <div className="w-full flex justify-center py-8">
+          <NewsletterSubscription />
         </div>
 
         {/* Copyright */}

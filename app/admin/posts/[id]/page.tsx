@@ -4,7 +4,7 @@ The light shines in darkness, but the darkness has not understood it
 */
 "use client"
 
-import { Suspense } from "react"
+import { Suspense, use } from "react"
 import { notFound } from "next/navigation"
 import { getCategories } from "@/lib/actions/category-actions"
 import { getPostById } from "@/lib/actions/post-actions"
@@ -95,6 +95,7 @@ async function PostEditor({ id }: { id: string }) {
 }
 
 export default function EditPostPage({ params }: EditPostPageProps) {
+  const { id } = use(params)
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -103,7 +104,7 @@ export default function EditPostPage({ params }: EditPostPageProps) {
       </div>
 
       <Suspense fallback={<EditorSkeleton />}>
-        <PostEditor id={params.id} />
+        <PostEditor id={id} />
       </Suspense>
     </div>
   )
