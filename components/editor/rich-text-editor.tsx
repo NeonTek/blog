@@ -17,38 +17,38 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { marked } from "marked";
 import TurndownService from "turndown"; 
 
-import type { ReactQuillProps } from 'react-quill';
-import type { Quill } from 'quill';// For the Quill editor instance type
+// import type { ReactQuillProps } from 'react-quill';
+// import type { Quill } from 'quill';// For the Quill editor instance type
 
 
 const turndownService = new TurndownService();
 
-type ReactQuillRef = {
-  getEditor(): Quill; 
+// type ReactQuillRef = {
+//   getEditor(): Quill; 
   
-} | null;
+// } | null;
 
 
-const ReactQuill = dynamic(
-  async () => {
-    if (typeof window !== "undefined") {
-      require("react-quill/dist/quill.snow.css");
-    }
-    const { default: RQ } = await import("react-quill");
-    return RQ; // Do not wrap with React.forwardRef
-  },
-  {
-    ssr: false,
-    loading: () => (
-      <div className="h-64 bg-muted animate-pulse rounded-md flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2" />
-          <p className="text-sm text-muted-foreground">Loading rich text editor...</p>
-        </div>
-      </div>
-    ),
-  }
-);
+// const ReactQuill = dynamic(
+//   async () => {
+//     if (typeof window !== "undefined") {
+//       require("react-quill/dist/quill.snow.css");
+//     }
+//     const { default: RQ } = await import("react-quill");
+//     return RQ; // Do not wrap with React.forwardRef
+//   },
+//   {
+//     ssr: false,
+//     loading: () => (
+//       <div className="h-64 bg-muted animate-pulse rounded-md flex items-center justify-center">
+//         <div className="text-center">
+//           <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2" />
+//           <p className="text-sm text-muted-foreground">Loading rich text editor...</p>
+//         </div>
+//       </div>
+//     ),
+//   }
+// );
 
 
 const modules = {
@@ -115,7 +115,7 @@ export default function PostEditorC({ post, categories: initialCategories }: Pos
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false) // New state for slug editing
 
 
-  const quillRef = useRef<ReactQuillRef>(null) 
+  // const quillRef = useRef<ReactQuillRef>(null) 
   const { toast } = useToast()
   const router = useRouter()
 
