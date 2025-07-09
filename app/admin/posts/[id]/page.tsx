@@ -2,7 +2,7 @@
 John 1:5
 The light shines in darkness, but the darkness has not understood it 
 */
-"use client"
+// "use client"
 
 import { Suspense, use } from "react"
 import { notFound } from "next/navigation"
@@ -95,7 +95,7 @@ async function PostEditor({ id }: { id: string }) {
 }
 
 export default function EditPostPage({ params }: EditPostPageProps) {
-  const { id } = use(params)
+  const { id } = params
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -104,8 +104,10 @@ export default function EditPostPage({ params }: EditPostPageProps) {
       </div>
 
       <Suspense fallback={<EditorSkeleton />}>
+        {/* Force client side by wrapping in dynamic import if needed */}
         <PostEditor id={id} />
       </Suspense>
     </div>
   )
 }
+

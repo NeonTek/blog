@@ -87,18 +87,18 @@ export async function getAllSubscribers() {
 
 async function sendWelcomeEmail(email: string, unsubscribeToken: string) {
   try {
-    const unsubscribeUrl = `https://blog.ongoro.top/unsubscribe?token=${unsubscribeToken}`
+    const unsubscribeUrl = `https://blog.neontek.co.ke/unsubscribe?token=${unsubscribeToken}`
 
     const emailData = {
       to: email,
-      subject: "Welcome to George Ongoro Blog Newsletter!",
+      subject: "Welcome to NeonTek Blog Newsletter!",
       html: `
         <!DOCTYPE html>
         <html lang="en">
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Welcome to George Ongoro Blog</title>
+          <title>Welcome to NeonTek Blog</title>
         </head>
         <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;">
           <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 40px 20px;">
@@ -110,7 +110,7 @@ async function sendWelcomeEmail(email: string, unsubscribeToken: string) {
             <div style="background-color: #f8f9fa; padding: 30px; border-radius: 8px; margin-bottom: 30px;">
               <h2 style="color: #333333; font-size: 24px; margin: 0 0 20px 0;">Subscription Confirmed!</h2>
               <p style="color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                Your subscription to the George Ongoro Blog newsletter has been successfully confirmed! You'll now receive updates about new blog posts, insights on technology, personal development, and exclusive content.
+                Your subscription to the NeonTek Blog newsletter has been successfully confirmed! You'll now receive updates about new blog posts, insights on technology, personal development, and exclusive content.
               </p>
               
               <div style="text-align: center; margin: 30px 0;">
@@ -136,10 +136,10 @@ async function sendWelcomeEmail(email: string, unsubscribeToken: string) {
             <div style="background-color: #e3f2fd; padding: 20px; border-radius: 8px; margin: 30px 0;">
               <h3 style="color: #1976d2; font-size: 18px; margin: 0 0 10px 0;">Connect with me:</h3>
               <p style="color: #555555; font-size: 14px; margin: 0;">
-                Follow me on social media for more updates and discussions:<br>
-                <a href="https://twitter.com/georgeongoro" style="color: #1976d2; text-decoration: none;">Twitter</a> | 
-                <a href="https://linkedin.com/in/georgeongoro" style="color: #1976d2; text-decoration: none;">LinkedIn</a> | 
-                <a href="https://github.com/georgeongoro" style="color: #1976d2; text-decoration: none;">GitHub</a>
+                Follow us on social media for more updates and discussions:<br>
+                <a href="https://x.com/neontek" style="color: #1976d2; text-decoration: none;">Twitter</a> | 
+                <a href="https://linkedin.com/in/neontek" style="color: #1976d2; text-decoration: none;">LinkedIn</a> | 
+                <a href="https://github.com/neontek" style="color: #1976d2; text-decoration: none;">GitHub</a>
               </p>
             </div>
             
@@ -148,7 +148,7 @@ async function sendWelcomeEmail(email: string, unsubscribeToken: string) {
                 You can <a href="${unsubscribeUrl}" style="color: #007bff;">unsubscribe</a> from this newsletter at any time.
               </p>
               <p style="color: #999999; font-size: 12px; margin: 10px 0 0 0;">
-                © ${new Date().getFullYear()} George Ongoro Blog. All rights reserved.
+                © ${new Date().getFullYear()} NeonTek Blog. All rights reserved. <br /> This is an automated email that does not support replies.
               </p>
             </div>
           </div>
