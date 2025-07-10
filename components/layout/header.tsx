@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
+import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react"; 
@@ -26,33 +27,45 @@ export default function Header() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
+  const { theme } = useTheme();
 
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await fetch("/api/categories")
+        const res = await fetch("/api/categories");
         if (res.ok) {
-          const result = await res.json()
+          const result = await res.json();
           if (result.success) {
-            setCategories(result.data || [])
+            setCategories(result.data || []);
           }
         }
       } catch (error) {
-        console.error("Failed to fetch categories:", error)
-        setCategories([])
+        console.error("Failed to fetch categories:", error);
+        setCategories([]);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
 
-    fetchCategories()
+    fetchCategories();
+
+    const isAdminLightMode = pathname.startsWith("/admin") && theme === "light";
+
+    if (isAdminLightMode) {
+      setScrolled(true);
+    }
+
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      if (!isAdminLightMode) {
+        setScrolled(window.scrollY > 50);
+      }
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [])
-  
+  }, [pathname, theme]);
+
+
   const navItems = [
     { name: "Home", href: "/" },
     { name: "Services", href: "https://neontek.co.ke/services" },
