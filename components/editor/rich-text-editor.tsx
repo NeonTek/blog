@@ -165,7 +165,7 @@ export default function PostEditorC({ post, categories: initialCategories }: Pos
         .toLowerCase()
         .replace(/[^\w\s-]/gi, "") 
         .replace(/\s+/g, "-")
-        .substring(0, 50)
+        .substring(0, 100)
       setSlug(generatedSlug)
     }
   }, [title, post, slugManuallyEdited])

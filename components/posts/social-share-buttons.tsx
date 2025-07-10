@@ -15,9 +15,9 @@ export default function SocialShareButtons({ url, title, excerpt }: SocialShareB
   const { toast } = useToast()
 
   // Ensure we have the full URL
-  const fullUrl = url.startsWith("http")
+  const fullUrl = url.startsWith("http") || url.startsWith("https")
     ? url
-    : `${process.env.NEXT_PUBLIC_SITE_URL || "https://blog.ongoro.top"}${url}`
+    : `${process.env.NEXT_PUBLIC_SITE_URL || "https://blog.neontek.co.ke"}${url}`
 
   // Prepare sharing URLs
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(fullUrl)}`

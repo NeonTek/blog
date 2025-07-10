@@ -14,8 +14,8 @@ type PostVoteButtonsProps = {
 }
 
 export default function PostVoteButtons({ postId }: PostVoteButtonsProps) {
-  const [upvotes, setUpvotes] = useState(0)
-  const [downvotes, setDownvotes] = useState(0)
+  const [upvotes, setUpvotes] = useState<number>(0)
+  const [downvotes, setDownvotes] = useState<number>(0)
   const [userVote, setUserVote] = useState<"upvote" | "downvote" | null>(null)
   const [user, setUser] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -30,8 +30,8 @@ export default function PostVoteButtons({ postId }: PostVoteButtonsProps) {
         const [votesData, userData] = await Promise.all([getPostVotes(postId), getCurrentUser()])
 
         if (votesData.success) {
-          setUpvotes(votesData.upvotes)
-          setDownvotes(votesData.downvotes)
+          setUpvotes(votesData.upvotes ?? 0)
+          setDownvotes(votesData.downvotes ?? 0)
         }
 
         setUser(userData)
@@ -65,8 +65,8 @@ export default function PostVoteButtons({ postId }: PostVoteButtonsProps) {
       const result = await votePost(postId, user._id, voteType)
 
       if (result.success) {
-        setUpvotes(result.upvotes)
-        setDownvotes(result.downvotes)
+        setUpvotes(result.upvotes ?? 0)
+        setDownvotes(result.downvotes ?? 0)
 
         // Update user vote state
         if (userVote === voteType) {

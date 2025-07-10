@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     }
   }
 
-  const url = `${process.env.NEXT_PUBLIC_SITE_URL || "https://blog.ongoro.top"}/${params.category}/${params.slug}`
+  const url = `${process.env.NEXT_PUBLIC_SITE_URL || "https://blog.neontek.co.ke"}/${params.category}/${params.slug}`
 
   return {
     title: post.title,
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
           alt: post.title,
         },
       ],
-      siteName: "George Ongoro Blog",
+      siteName: "NeonTek Blog",
     },
     twitter: {
       card: "summary_large_image",

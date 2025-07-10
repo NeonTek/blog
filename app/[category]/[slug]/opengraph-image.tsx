@@ -14,7 +14,7 @@ export const size = {
 export const contentType = "image/png"
 
 export default async function Image({ params }: { params: { category: string; slug: string } }) {
-  // Create a simple OG image using just the params
+
   const title = params.slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
   const category = params.category.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
 
@@ -53,7 +53,7 @@ export default async function Image({ params }: { params: { category: string; sl
           opacity: 0.9,
         }}
       >
-        George Ongoro Blog
+        Neon Tek Blog
       </div>
     </div>,
     { ...size },
