@@ -7,7 +7,12 @@ import Link from "next/link"
 import { Users, Eye, Clock, ThumbsUp, MessageSquare } from "lucide-react"
 
 // Visit Stats Cards Component
-export function VisitStatsCards({ totalVisits, uniqueVisitors }) {
+interface VisitStatsCardsProps {
+  totalVisits: number;
+  uniqueVisitors: number;
+}
+
+export function VisitStatsCards({ totalVisits, uniqueVisitors }: VisitStatsCardsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <Card>
@@ -45,7 +50,13 @@ export function VisitStatsCards({ totalVisits, uniqueVisitors }) {
 }
 
 // Engagement Metrics Cards Component
-export function EngagementMetricsCards({ votes, comments, avgTimeOnSite }) {
+interface EngagementMetricsCardsProps {
+  votes: number;
+  comments: number;
+  avgTimeOnSite: number;
+}
+
+export function EngagementMetricsCards({ votes, comments, avgTimeOnSite }: EngagementMetricsCardsProps) {
   // Format time in minutes and seconds
   const minutes = Math.floor(avgTimeOnSite / 60)
   const seconds = avgTimeOnSite % 60
@@ -80,7 +91,12 @@ export function EngagementMetricsCards({ votes, comments, avgTimeOnSite }) {
 }
 
 // Device Stats Cards Component
-export function DeviceStatsCards({ devices, browsers }) {
+interface DeviceStatsCardsProps {
+  devices: { device: string; count: number }[];
+  browsers: { browser: string; count: number }[];
+}
+
+export function DeviceStatsCards({ devices, browsers }: DeviceStatsCardsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <Card>
@@ -89,7 +105,7 @@ export function DeviceStatsCards({ devices, browsers }) {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {devices.map((item) => (
+            {devices.map((item: { device: string; count: number }) => (
               <div key={item.device} className="flex items-center justify-between">
                 <span className="capitalize">{item.device}</span>
                 <div className="flex items-center gap-2">
@@ -114,7 +130,7 @@ export function DeviceStatsCards({ devices, browsers }) {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {browsers.map((item) => (
+            {browsers.map((item: { browser: string; count: number }) => (
               <div key={item.browser} className="flex items-center justify-between">
                 <span>{item.browser}</span>
                 <div className="flex items-center gap-2">
@@ -138,7 +154,22 @@ export function DeviceStatsCards({ devices, browsers }) {
 }
 
 // Popular Posts Table Component
-export function PopularPostsTable({ posts }) {
+interface PopularPost {
+  _id: string;
+  title: string;
+  category: string;
+  slug: string;
+  views: number;
+  upvotes: number;
+  comments: number;
+  engagement: number;
+}
+
+interface PopularPostsTableProps {
+  posts: PopularPost[];
+}
+
+export function PopularPostsTable({ posts }: PopularPostsTableProps) {
   return (
     <div className="overflow-x-auto">
       <Table>

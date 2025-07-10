@@ -242,7 +242,7 @@ export async function getPopularPosts(limit = 50) {
             })
 
             return {
-              _id: post._id,
+              _id: (post._id as string | { toString(): string }).toString(),
               title: post.title,
               slug: post.slug,
               category: post.category,

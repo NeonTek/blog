@@ -27,7 +27,17 @@ export default function AnalyticsDashboard() {
   const [visitStats, setVisitStats] = useState({ totalVisits: 0, uniqueVisitors: 0 })
   const [dailyVisits, setDailyVisits] = useState<{ date: string; visits: number }[]>([])
   const [trafficSources, setTrafficSources] = useState<{ source: string; count: number }[]>([])
-  const [popularPosts, setPopularPosts] = useState<{ title: string; views: number }[]>([])
+  type PopularPost = {
+    _id: string
+    title: string
+    slug: string
+    category: string
+    views: number
+    upvotes: number
+    comments: number
+    engagement: number
+  }
+  const [popularPosts, setPopularPosts] = useState<PopularPost[]>([])
   const [engagementMetrics, setEngagementMetrics] = useState({ votes: 0, comments: 0, avgTimeOnSite: 0 })
   type DeviceStats = {
     devices: { device: string; count: number }[]
@@ -66,10 +76,17 @@ export default function AnalyticsDashboard() {
           (popularPostsData ?? [])
             .filter((post): post is Exclude<typeof popularPostsData[number], null> => !!post)
             .map(post => ({
+              _id: String(post._id),
               title: post.title,
+              slug: post.slug,
+              category: post.category,
               views: post.views,
+              upvotes: post.upvotes,
+              comments: post.comments,
+              engagement: post.engagement,
             }))
         )
+
         setEngagementMetrics(engagementMetricsData)
         setDeviceStats(deviceStatsData)
       } catch (error) {
