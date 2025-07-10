@@ -96,7 +96,7 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <Card>
+        <Card className="overflow-hidden">
           <CardHeader>
             <CardTitle className="flex items-center">
               <FileText className="mr-2 h-5 w-5" />
@@ -107,12 +107,12 @@ export default async function AdminDashboard() {
             {posts.length > 0 ? (
               <ul className="space-y-2">
                 {posts.slice(0, 5).map((post: Post) => (
-                  <li key={post._id} className="flex items-center justify-between border-b pb-2">
+                  <li key={post._id} className="flex items-center justify-between border-b pb-2 w-[80%]">
                     <div className="flex items-center">
                       <span
                         className={`w-2 h-2 rounded-full mr-2 ${post.published ? "bg-green-500" : "bg-amber-500"}`}
                       />
-                      <span className="truncate text-sm">{post.title}</span>
+                      <span className="max-w-[70%] break-words whitespace-normal text-sm">{post.title}</span>
                     </div>
                     <Button variant="ghost" size="sm" asChild>
                       <Link href={`/admin/posts/${post._id}`}>Edit</Link>
