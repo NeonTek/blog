@@ -143,17 +143,21 @@ export async function getTrafficSources(days = 30) {
               "direct",
               {
                 $cond: [
+                  { $regexMatch: { input: "$referrer", regex: /neontek\.co.ke/ } },
+                  "Website",
+                ],
+                $cond: [
                   { $regexMatch: { input: "$referrer", regex: /google\.com/ } },
-                  "google",
+                  "Google",
                   {
                     $cond: [
                       { $regexMatch: { input: "$referrer", regex: /facebook\.com/ } },
-                      "facebook",
+                      "Facebook",
                       {
                         $cond: [
                           { $regexMatch: { input: "$referrer", regex: /twitter\.com/ } },
-                          "twitter",
-                          "other",
+                          "Twitter",
+                          "Other",
                         ],
                       },
                     ],
