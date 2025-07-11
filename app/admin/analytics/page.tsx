@@ -5,9 +5,26 @@ The light shines in darkness, but the darkness has not understood it
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { useToast } from "@/hooks/use-toast"
 import {
   getVisitStats,
@@ -17,16 +34,37 @@ import {
   getEngagementMetrics,
   getDeviceStats,
 } from "@/lib/actions/analytics-actions"
-import { BarChart, LineChart, DonutChart } from "@/components/analytics/charts"
-import { VisitStatsCards, PopularPostsTable, EngagementMetricsCards } from "@/components/analytics/stats-components"
-import { Loader2, BarChart3, LineChartIcon, PieChartIcon } from "lucide-react"
+import {
+  BarChart,
+  LineChart,
+  DonutChart,
+} from "@/components/analytics/charts"
+import {
+  VisitStatsCards,
+  PopularPostsTable,
+  EngagementMetricsCards,
+} from "@/components/analytics/stats-components"
+import {
+  Loader2,
+  BarChart3,
+  LineChartIcon,
+  PieChartIcon,
+} from "lucide-react"
 
 export default function AnalyticsDashboard() {
   const [timeRange, setTimeRange] = useState("30")
   const [isLoading, setIsLoading] = useState(true)
-  const [visitStats, setVisitStats] = useState({ totalVisits: 0, uniqueVisitors: 0 })
-  const [dailyVisits, setDailyVisits] = useState<{ date: string; visits: number }[]>([])
-  const [trafficSources, setTrafficSources] = useState<{ source: string; count: number }[]>([])
+  const [visitStats, setVisitStats] = useState({
+    totalVisits: 0,
+    uniqueVisitors: 0,
+  })
+  const [dailyVisits, setDailyVisits] = useState<
+    { date: string; visits: number }[]
+  >([])
+  const [trafficSources, setTrafficSources] = useState<
+    { source: string; count: number }[]
+  >([])
+
   type PopularPost = {
     _id: string
     title: string
@@ -38,14 +76,22 @@ export default function AnalyticsDashboard() {
     engagement: number
   }
   const [popularPosts, setPopularPosts] = useState<PopularPost[]>([])
-  const [engagementMetrics, setEngagementMetrics] = useState({ votes: 0, comments: 0, avgTimeOnSite: 0 })
+
+  const [engagementMetrics, setEngagementMetrics] = useState({
+    votes: 0,
+    comments: 0,
+    avgTimeOnSite: 0,
+  })
+
   type DeviceStats = {
     devices: { device: string; count: number }[]
     browsers: { browser: string; count: number }[]
   }
-  const [deviceStats, setDeviceStats] = useState<DeviceStats>({ devices: [], browsers: [] })
-  console.log("Device Stats Data:", deviceStats)
-  console.log("Engagement Metrics Data:", engagementMetrics)
+  const [deviceStats, setDeviceStats] = useState<DeviceStats>({
+    devices: [],
+    browsers: [],
+  })
+
   const { toast } = useToast()
 
   useEffect(() => {
@@ -87,7 +133,6 @@ export default function AnalyticsDashboard() {
               engagement: post.engagement,
             }))
         )
-
         setEngagementMetrics(engagementMetricsData)
         setDeviceStats(deviceStatsData)
       } catch (error) {
@@ -106,11 +151,13 @@ export default function AnalyticsDashboard() {
   }, [timeRange, toast])
 
   return (
-    <div className="container mx-auto px-4 py-8 pt-24">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+    <div className="container mx-auto px-4 py-8 pt-20 overflow-hidden">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4 min-w-0">
         <div>
           <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
-          <p className="text-muted-foreground mt-2">Insights and statistics for your blog</p>
+          <p className="text-muted-foreground mt-2">
+            Insights and statistics for your blog
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground">Time Range:</span>
@@ -135,7 +182,10 @@ export default function AnalyticsDashboard() {
         </div>
       ) : (
         <div className="space-y-8">
-          <VisitStatsCards totalVisits={visitStats.totalVisits} uniqueVisitors={visitStats.uniqueVisitors} />
+          <VisitStatsCards
+            totalVisits={visitStats.totalVisits}
+            uniqueVisitors={visitStats.uniqueVisitors}
+          />
 
           <Card>
             <CardHeader>
@@ -143,27 +193,40 @@ export default function AnalyticsDashboard() {
                 <LineChartIcon className="h-5 w-5" />
                 Visits Over Time
               </CardTitle>
-              <CardDescription>Daily visits for the selected time period</CardDescription>
+              <CardDescription>
+                Daily visits for the selected time period
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[350px]">
-                <LineChart data={dailyVisits} xField="date" yField="visits" label="Daily Visits" />
+              <div className="h-[350px] overflow-x-auto">
+                <LineChart
+                  data={dailyVisits}
+                  xField="date"
+                  yField="visits"
+                  label="Daily Visits"
+                />
               </div>
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 min-w-0">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <PieChartIcon className="h-5 w-5" />
                   Traffic Sources
                 </CardTitle>
-                <CardDescription>Where your visitors are coming from</CardDescription>
+                <CardDescription>
+                  Where your visitors are coming from
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-[300px]">
-                  <DonutChart data={trafficSources} categoryField="source" valueField="count" />
+                <div className="h-[300px] overflow-x-auto">
+                  <DonutChart
+                    data={trafficSources}
+                    categoryField="source"
+                    valueField="count"
+                  />
                 </div>
               </CardContent>
             </Card>
@@ -174,7 +237,9 @@ export default function AnalyticsDashboard() {
                   <BarChart3 className="h-5 w-5" />
                   Device Breakdown
                 </CardTitle>
-                <CardDescription>Devices used to access your blog</CardDescription>
+                <CardDescription>
+                  Devices used to access your blog
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <Tabs defaultValue="devices">
@@ -183,13 +248,23 @@ export default function AnalyticsDashboard() {
                     <TabsTrigger value="browsers">Browsers</TabsTrigger>
                   </TabsList>
                   <TabsContent value="devices">
-                    <div className="h-[250px]">
-                      <BarChart data={deviceStats.devices} categoryField="device" valueField="count" label="Visitors" />
+                    <div className="h-[250px] overflow-x-auto">
+                      <BarChart
+                        data={deviceStats.devices}
+                        categoryField="device"
+                        valueField="count"
+                        label="Visitors"
+                      />
                     </div>
                   </TabsContent>
                   <TabsContent value="browsers">
-                    <div className="h-[250px]">
-                      <BarChart data={deviceStats.browsers} categoryField="browser" valueField="count" label="Visitors" />
+                    <div className="h-[250px] overflow-x-auto">
+                      <BarChart
+                        data={deviceStats.browsers}
+                        categoryField="browser"
+                        valueField="count"
+                        label="Visitors"
+                      />
                     </div>
                   </TabsContent>
                 </Tabs>
@@ -206,10 +281,14 @@ export default function AnalyticsDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>Most Popular Posts</CardTitle>
-              <CardDescription>Posts with the highest views and engagement</CardDescription>
+              <CardDescription>
+                Posts with the highest views and engagement
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <PopularPostsTable posts={popularPosts} />
+              <div className="overflow-x-auto">
+                <PopularPostsTable posts={popularPosts} />
+              </div>
             </CardContent>
           </Card>
         </div>
