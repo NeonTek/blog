@@ -44,7 +44,8 @@ export default function AnalyticsDashboard() {
     browsers: { browser: string; count: number }[]
   }
   const [deviceStats, setDeviceStats] = useState<DeviceStats>({ devices: [], browsers: [] })
-
+  console.log("Device Stats Data:", deviceStats)
+  console.log("Engagement Metrics Data:", engagementMetrics)
   const { toast } = useToast()
 
   useEffect(() => {

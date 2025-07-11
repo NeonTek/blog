@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { SuggestedPages } from "./suggested-pages";
 import NewsletterSubscription from "@/components/newsletter/newsletter-subscription";
 
 export default function Footer() {
@@ -108,10 +107,9 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Suggested Pages */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Suggested Pages</h3>
-            {typeof window !== "undefined" && <SuggestedPages />}
+          {/* Newsletter Full Width Row */}
+          <div className="w-full flex justify-center py-8">
+            <NewsletterSubscription />
           </div>
 
           {/* Contact Info */}
@@ -134,10 +132,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Newsletter Full Width Row */}
-        <div className="w-full flex justify-center py-8">
-          <NewsletterSubscription />
-        </div>
+        
 
         {/* Copyright */}
         <div className="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 text-center">

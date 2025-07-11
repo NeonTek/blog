@@ -16,9 +16,38 @@ import {
   Legend,
 } from "recharts"
 import { format, parseISO } from "date-fns"
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart"
 
-// Color palette for charts
+type ChartData = Record<string, string | number>
+
+type BaseChartProps = {
+  data: ChartData[]
+  label?: string
+}
+
+// ✅ LineChart Props
+type LineChartProps = BaseChartProps & {
+  xField: string
+  yField: string
+}
+
+// ✅ BarChart Props
+type BarChartProps = BaseChartProps & {
+  categoryField: string
+  valueField: string
+}
+
+// ✅ PieChart & DonutChart Props
+type PieChartProps = {
+  data: ChartData[]
+  categoryField: string
+  valueField: string
+}
+
 const COLORS = [
   "hsl(var(--chart-1))",
   "hsl(var(--chart-2))",
@@ -27,8 +56,8 @@ const COLORS = [
   "hsl(var(--chart-5))",
 ]
 
-// Line Chart Component
-export function LineChart({ data, xField, yField, label }) {
+// ✅ Line Chart Component
+export function LineChart({ data, xField, yField, label }: LineChartProps) {
   return (
     <ChartContainer
       config={{
@@ -40,11 +69,14 @@ export function LineChart({ data, xField, yField, label }) {
       className="h-full"
     >
       <ResponsiveContainer width="100%" height="100%">
-        <RechartsLineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 30 }}>
+        <RechartsLineChart
+          data={data}
+          margin={{ top: 10, right: 30, left: 0, bottom: 30 }}
+        >
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis
             dataKey={xField}
-            tickFormatter={(value) => {
+            tickFormatter={(value: string) => {
               try {
                 return format(parseISO(value), "MMM d")
               } catch {
@@ -59,7 +91,7 @@ export function LineChart({ data, xField, yField, label }) {
           <Line
             type="monotone"
             dataKey={yField}
-            stroke="var(--color-[yField])"
+            stroke="var(--color-chart-1)"
             strokeWidth={2}
             dot={{ r: 3 }}
             activeDot={{ r: 5 }}
@@ -70,8 +102,13 @@ export function LineChart({ data, xField, yField, label }) {
   )
 }
 
-// Bar Chart Component
-export function BarChart({ data, categoryField, valueField, label }) {
+// ✅ Bar Chart Component
+export function BarChart({
+  data,
+  categoryField,
+  valueField,
+  label,
+}: BarChartProps) {
   return (
     <ChartContainer
       config={{
@@ -83,20 +120,27 @@ export function BarChart({ data, categoryField, valueField, label }) {
       className="h-full"
     >
       <ResponsiveContainer width="100%" height="100%">
-        <RechartsBarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 30 }}>
+        <RechartsBarChart
+          data={data}
+          margin={{ top: 10, right: 30, left: 0, bottom: 30 }}
+        >
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey={categoryField} tick={{ fontSize: 12 }} tickMargin={10} />
           <YAxis tick={{ fontSize: 12 }} />
           <ChartTooltip content={<ChartTooltipContent />} />
-          <Bar dataKey={valueField} fill="var(--color-[valueField])" radius={[4, 4, 0, 0]} />
+          <Bar
+            dataKey={valueField}
+            radius={[4, 4, 0, 0]}
+            fill="var(--color-chart-1)"
+          />
         </RechartsBarChart>
       </ResponsiveContainer>
     </ChartContainer>
   )
 }
 
-// Pie Chart Component
-export function PieChart({ data, categoryField, valueField }) {
+// ✅ Pie Chart Component
+export function PieChart({ data, categoryField, valueField }: PieChartProps) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <RechartsPieChart>
@@ -109,7 +153,9 @@ export function PieChart({ data, categoryField, valueField }) {
           fill="#8884d8"
           dataKey={valueField}
           nameKey={categoryField}
-          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+          label={({ name, percent }) =>
+            percent != null ? `${name}: ${(percent * 100).toFixed(0)}%` : name
+          }
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -122,8 +168,8 @@ export function PieChart({ data, categoryField, valueField }) {
   )
 }
 
-// Donut Chart Component
-export function DonutChart({ data, categoryField, valueField }) {
+// ✅ Donut Chart Component
+export function DonutChart({ data, categoryField, valueField }: PieChartProps) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <RechartsPieChart>
@@ -136,7 +182,9 @@ export function DonutChart({ data, categoryField, valueField }) {
           fill="#8884d8"
           dataKey={valueField}
           nameKey={categoryField}
-          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+          label={({ name, percent }) =>
+            percent != null ? `${name}: ${(percent * 100).toFixed(0)}%` : name
+          }
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

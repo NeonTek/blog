@@ -105,7 +105,7 @@ export default function CookieConsentModal() {
   const initializeAnalytics = () => {
     // Initialize Vercel Analytics
     if (typeof window !== "undefined" && window.va) {
-      window.va("track", "cookie_consent_analytics_accepted")
+      window.va("event", "cookie_consent_analytics_accepted")
     }
   }
 
