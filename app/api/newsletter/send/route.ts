@@ -24,9 +24,9 @@ export async function POST(request: NextRequest) {
     const emails = subscribers.map((subscriber: any) => subscriber.email)
     const unsubscribeFooter = isHtml
       ? `<br><br><hr><p style="font-size: 12px; color: #666;">
-           You can <a href="${process.env.NEXT_PUBLIC_SITE_URL || "https://blog.ongoro.top"}/unsubscribe?token={{UNSUBSCRIBE_TOKEN}}">unsubscribe</a> from this newsletter at any time.
+           You can <a href="${process.env.NEXT_PUBLIC_SITE_URL || "https://blog.neontek.co.ke"}/unsubscribe?token={{UNSUBSCRIBE_TOKEN}}">unsubscribe</a> from this newsletter at any time.
          </p>`
-      : `\n\n---\nUnsubscribe from this newsletter: ${process.env.NEXT_PUBLIC_SITE_URL || "https://blog.ongoro.top"}/unsubscribe?token={{UNSUBSCRIBE_TOKEN}}`
+      : `\n\n---\nUnsubscribe from this newsletter: ${process.env.NEXT_PUBLIC_SITE_URL || "https://blog.neontek.co.ke"}/unsubscribe?token={{UNSUBSCRIBE_TOKEN}}`
 
     // Send emails individually to include personalized unsubscribe links
     const results = []
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
 
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_SITE_URL || "https://blog.ongoro.top"}/api/email/send`,
+          `${process.env.NEXT_PUBLIC_SITE_URL || "https://blog.neontek.co.ke"}/api/email/send`,
           {
             method: "POST",
             headers: {
