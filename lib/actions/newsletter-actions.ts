@@ -103,7 +103,7 @@ async function sendWelcomeEmail(email: string, unsubscribeToken: string) {
         <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;">
           <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 40px 20px;">
             <div style="text-align: center; margin-bottom: 40px;">
-              <h1 style="color: #333333; font-size: 28px; margin: 0;">Welcome to George Ongoro Blog!</h1>
+              <h1 style="color: #333333; font-size: 28px; margin: 0;">Welcome to NeonTek Blog!</h1>
               <p style="color: #666666; font-size: 16px; margin: 10px 0 0 0;">Thank you for subscribing to our newsletter</p>
             </div>
             
@@ -114,7 +114,7 @@ async function sendWelcomeEmail(email: string, unsubscribeToken: string) {
               </p>
               
               <div style="text-align: center; margin: 30px 0;">
-                <a href="https://blog.ongoro.top" 
+                <a href="https://neontek.co.ke" target="_blank" rel="noopener noreferrer"
                    style="background-color: #28a745; color: #ffffff; text-decoration: none; padding: 15px 30px; border-radius: 5px; font-size: 16px; font-weight: bold; display: inline-block;">
                   Visit the Blog
                 </a>
