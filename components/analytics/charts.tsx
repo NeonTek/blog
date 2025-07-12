@@ -114,7 +114,7 @@ export function BarChart({
       config={{
         [valueField]: {
           label: label || "Value",
-          color: "hsl(var(--chart-1))",
+          color: "#0891b2", // Tailwind's cyan-600
         },
       }}
       className="h-full"
@@ -131,7 +131,7 @@ export function BarChart({
           <Bar
             dataKey={valueField}
             radius={[4, 4, 0, 0]}
-            fill="var(--color-chart-1)"
+            fill="#0891b2" // ✅ cyan-600
           />
         </RechartsBarChart>
       </ResponsiveContainer>
