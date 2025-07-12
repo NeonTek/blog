@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     title: "NeonTek Blog",
     description: "Insights on tech, programming, and innovation by NeonTek.",
     images: ["/icon.png",],
-    site: "@NeonTek", // optional if you have a Twitter handle
+    site: "@NeonTek", 
   },
 }
 
@@ -62,13 +62,20 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/x-icon" href="/favicon.png" />
-        <meta name="google-adsense-account" content="ca-pub-1908166869645479" />
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1908166869645479" crossOrigin="anonymous"></script>
+        {/* Removed AdSense meta and script */}
       </head>
       <body className={inter.className}>
         {/* Gatekeeper Consent Scripts using next/script for better control */}
-        <Script src="https://cmp.gatekeeperconsent.com/min.js" data-cfasync="false" strategy="beforeInteractive" />
-        <Script src="https://the.gatekeeperconsent.com/cmp.min.js" data-cfasync="false" strategy="beforeInteractive" />
+        <Script
+          src="https://cmp.gatekeeperconsent.com/min.js"
+          data-cfasync="false"
+          strategy="beforeInteractive"
+        />
+        <Script
+          src="https://the.gatekeeperconsent.com/cmp.min.js"
+          data-cfasync="false"
+          strategy="beforeInteractive"
+        />
 
         {/* Ezoic Scripts using next/script */}
         <Script src="//www.ezojs.com/ezoic/sa.min.js" strategy="beforeInteractive" />
@@ -79,7 +86,12 @@ export default function RootLayout({
           `}
         </Script>
 
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <div className="flex flex-col min-h-screen">
             <Header />
             <Suspense>
@@ -93,5 +105,6 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
+
   )
 }
