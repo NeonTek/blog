@@ -45,6 +45,9 @@ export default function AdminLoginPage() {
       })
 
       router.push("/admin")
+      setTimeout(() => {
+        location.reload()
+      }, 500)
     } catch (error) {
       toast({
         title: "Error",
@@ -55,6 +58,7 @@ export default function AdminLoginPage() {
       setIsSubmitting(false)
     }
   }
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/50">
