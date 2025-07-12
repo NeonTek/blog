@@ -326,7 +326,7 @@ export async function getDeviceStats(days = 30) {
       {
         $match: {
           createdAt: { $gte: startDate },
-          userAgent: { $and: [{ $ne: null }, { $ne: "" }] },
+          userAgent: { $ne: null, $ne: "" },
         },
       },
       {
@@ -350,7 +350,7 @@ export async function getDeviceStats(days = 30) {
       {
         $match: {
           createdAt: { $gte: startDate },
-          userAgent: { $and: [{ $ne: null }, { $ne: "" }] },
+          userAgent: { $ne: null, $ne: "" },
         },
       },
       {
