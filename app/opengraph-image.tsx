@@ -29,8 +29,8 @@ export default async function Image() {
         padding: "40px",
       }}
     >
-      <div style={{ fontSize: "64px", fontWeight: "bold" }}>George Ongoro</div>
-      <div style={{ fontSize: "32px", marginTop: "20px" }}>Personal Blog</div>
+      <div style={{ fontSize: "64px", fontWeight: "bold" }}>NeonTek</div>
+      <div style={{ fontSize: "32px", marginTop: "20px" }}>Blog</div>
     </div>,
     {
       ...size,

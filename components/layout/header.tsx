@@ -3,17 +3,22 @@ John 1:5
 The light shines in darkness, but the darkness has not understood it 
 */
 "use client"
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/mode-toggle";
-import { useTheme } from "next-themes";
-import Image from "next/image";
-import Link from "next/link";
-import { ChevronDown } from "lucide-react"; 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+
+import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
+import { usePathname } from "next/navigation"
+import { Menu, X, ChevronDown } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { ModeToggle } from "@/components/mode-toggle"
+import { useTheme } from "next-themes"
+import Image from "next/image"
+import Link from "next/link"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 type Category = {
   _id: string
@@ -22,49 +27,52 @@ type Category = {
 }
 
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const pathname = usePathname();
-  const { theme } = useTheme();
+  const [isOpen, setIsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [categories, setCategories] = useState<Category[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  const pathname = usePathname()
+  const { theme } = useTheme()
+
+  // 🔒 Hide header on /admin routes
+  if (pathname.startsWith("/admin")) {
+    return null
+  }
 
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await fetch("/api/categories");
+        const res = await fetch("/api/categories")
         if (res.ok) {
-          const result = await res.json();
+          const result = await res.json()
           if (result.success) {
-            setCategories(result.data || []);
+            setCategories(result.data || [])
           }
         }
       } catch (error) {
-        console.error("Failed to fetch categories:", error);
-        setCategories([]);
+        console.error("Failed to fetch categories:", error)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }
 
-    fetchCategories();
+    fetchCategories()
 
-    const isAdminLightMode = pathname.startsWith("/admin") && theme === "light";
-
+    const isAdminLightMode = pathname.startsWith("/admin") && theme === "light"
     if (isAdminLightMode) {
-      setScrolled(true);
+      setScrolled(true)
     }
 
     const handleScroll = () => {
       if (!isAdminLightMode) {
-        setScrolled(window.scrollY > 50);
+        setScrolled(window.scrollY > 50)
       }
-    };
+    }
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname, theme]);
-
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [pathname, theme])
 
   const navItems = [
     { name: "Home", href: "/" },
@@ -73,7 +81,7 @@ export default function Header() {
     { name: "Blog", href: "https://blog.neontek.co.ke/" },
     { name: "About", href: "https://neontek.co.ke/about" },
     { name: "Contact", href: "https://neontek.co.ke/contact" },
-  ];
+  ]
 
   return (
     <motion.header
@@ -81,9 +89,7 @@ export default function Header() {
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
       className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
-        scrolled
-          ? "bg-background/95 backdrop-blur-sm shadow-lg "
-          : "bg-transparent"
+        scrolled ? "bg-background/95 backdrop-blur-sm shadow-lg" : "bg-transparent"
       }`}
     >
       <div className="container mx-auto">
@@ -94,7 +100,9 @@ export default function Header() {
               alt="Neontek"
               width={120}
               height={40}
-              className={`h-16 w-auto dark:brightness-0 dark:invert transition-all duration-300 ${scrolled ? "" : "invert brightness-0"}`}
+              className={`h-16 w-auto dark:brightness-0 dark:invert transition-all duration-300 ${
+                scrolled ? "" : "invert brightness-0"
+              }`}
             />
           </Link>
 
@@ -111,7 +119,7 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
-            
+
             {!isLoading && categories.length > 0 && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -141,8 +149,8 @@ export default function Header() {
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
+            )}
 
-                )}
             <div className="flex items-center space-x-2">
               <ModeToggle />
               <Link href="/contact/#contact-form">
@@ -160,11 +168,7 @@ export default function Header() {
               onClick={() => setIsOpen(!isOpen)}
               className={`p-2 ${scrolled ? "text-foreground" : "text-white"}`}
             >
-              {isOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
@@ -198,5 +202,5 @@ export default function Header() {
         )}
       </div>
     </motion.header>
-  );
+  )
 }
