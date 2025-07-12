@@ -1,7 +1,3 @@
-/*
-John 1:5
-The light shines in darkness, but the darkness has not understood it 
-*/
 "use client"
 
 import { useState, useEffect } from "react"
@@ -28,7 +24,6 @@ type Category = {
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -58,15 +53,7 @@ export default function Header() {
     }
 
     fetchCategories()
-
-  
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
- 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [pathname, theme])
+  }, [pathname])
 
   const navItems = [
     { name: "Home", href: "/" },
@@ -77,25 +64,26 @@ export default function Header() {
     { name: "Contact", href: "https://neontek.co.ke/contact" },
   ]
 
+  const isDark =  theme === "dark";
+  const isHome = pathname === "/";
+
   return (
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
-        scrolled ? "bg-background/95 backdrop-blur-sm shadow-lg" : "bg-transparent text-black"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 bg-background/95 backdrop-blur-sm shadow-lg`}
     >
       <div className="container mx-auto">
         <div className="flex items-center justify-between h-16">
           <Link href="https://neontek.co.ke/" className="flex items-center">
             <Image
               src="/images/neontek-logo.png"
-              alt="Neontek"
+              alt="NeonTek"
               width={120}
               height={40}
-              className={`h-16 w-auto dark:brightness-0 dark:invert transition-all duration-300 ${
-                scrolled ? "" : "invert brightness-0"
+              className={`h-16 w-auto transition-all duration-300 ${
+                isDark || isHome ? "md:invert md:brightness-0" : ""
               }`}
             />
           </Link>
@@ -107,7 +95,7 @@ export default function Header() {
                 key={item.name}
                 href={item.href}
                 className={`font-medium transition-colors hover:text-cyan-500 ${
-                  scrolled ? "text-foreground" : "text-white"
+                  isDark || isHome ? "text-white" : "text-foreground"
                 }`}
               >
                 {item.name}
@@ -119,7 +107,7 @@ export default function Header() {
                 <DropdownMenuTrigger asChild>
                   <div
                     className={`flex items-center cursor-pointer font-medium transition-colors hover:text-cyan-500 ${
-                      scrolled ? "text-foreground" : "text-white"
+                      isDark || isHome ? "text-white" : "text-foreground"
                     }`}
                   >
                     Categories
@@ -160,7 +148,7 @@ export default function Header() {
             <ModeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`p-2 ${scrolled ? "text-foreground" : "text-white"}`}
+              className={"p-2 text-foreground"}
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
