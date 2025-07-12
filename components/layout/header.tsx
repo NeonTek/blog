@@ -60,11 +60,10 @@ export default function Header() {
     fetchCategories()
 
   
-
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-    }
-
+      setScrolled(window.scrollY > 50);
+    };
+ 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [pathname, theme])
@@ -84,7 +83,7 @@ export default function Header() {
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
       className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
-        scrolled ? "bg-background/95 backdrop-blur-sm shadow-lg" : "bg-transparent"
+        scrolled ? "bg-background/95 backdrop-blur-sm shadow-lg" : "bg-transparent text-black"
       }`}
     >
       <div className="container mx-auto">
