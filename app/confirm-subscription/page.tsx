@@ -23,7 +23,7 @@ export default function ConfirmSubscriptionPage() {
             <CheckCircle className="h-5 w-5 text-green-500" />
             Subscription Confirmed!
           </CardTitle>
-          <CardDescription>Welcome to George Ongoro Blog newsletter</CardDescription>
+          <CardDescription>Welcome to NeonTek's tech blog newsletter</CardDescription>
         </CardHeader>
         <CardContent className="text-center space-y-4">
           <p className="text-sm">{message}</p>
@@ -41,7 +41,7 @@ export default function ConfirmSubscriptionPage() {
               </ul>
             </div>
             <Button asChild className="w-full">
-              <a href="/">Explore the Blog</a>
+              <a href="https://blog.neontek.co.ke">Explore the Blog</a>
             </Button>
           </div>
         </CardContent>
