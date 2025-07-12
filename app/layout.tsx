@@ -23,12 +23,34 @@ export const metadata: Metadata = {
     template: "%s | NeonTek Blog",
   },
   description: "Blog by NeonTek sharing insights on various topics",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://blog.neotek.co.ke"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://blog.neontek.co.ke"),
   icons: {
     icon: "/icon.png",
     shortcut: "/icon.png",
     apple: "/icon.png",
-  }
+  },
+  openGraph: {
+    title: "NeonTek Blog",
+    description: "Insights on tech, programming, and innovation by NeonTek.",
+    url: "https://blog.neontek.co.ke",
+    siteName: "NeonTek Blog",
+    type: "website",
+    images: [
+      {
+        url: "/icon.png",
+        width: 1200,
+        height: 630,
+        alt: "NeonTek Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "NeonTek Blog",
+    description: "Insights on tech, programming, and innovation by NeonTek.",
+    images: ["/icon.png",],
+    site: "@NeonTek", // optional if you have a Twitter handle
+  },
 }
 
 export default function RootLayout({
