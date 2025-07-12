@@ -158,7 +158,7 @@ async function sendWelcomeEmail(email: string, unsubscribeToken: string) {
     }
 
     // Send email via API route
-    const response = await fetch("https://blog.ongoro.top/api/email/send", {
+    const response = await fetch("https://blog.neontek.co.ke/api/email/send", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

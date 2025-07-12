@@ -19,7 +19,8 @@ export async function POST(request: NextRequest) {
     if (subscribers.length === 0) {
       return NextResponse.json({ success: false, message: "No active subscribers found." }, { status: 400 })
     }
-
+    console.log(`Found ${subscribers.length} active subscribers.`)
+    console.log("Site name:", process.env.NEXT_PUBLIC_SITE_NAME )
     // Prepare email content with unsubscribe links
     const emails = subscribers.map((subscriber: any) => subscriber.email)
     const unsubscribeFooter = isHtml
