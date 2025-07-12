@@ -92,13 +92,19 @@ export default function NewsletterSubscription() {
             You've been successfully subscribed to our newsletter. Check your email for a welcome message with more
             details.
           </p>
-          <Button variant="outline" onClick={() => setIsSubscribed(false)} className="w-full">
-            Subscribe Another Email
-          </Button>
+          <div className="flex flex-col gap-2">
+            <Button variant="outline" onClick={() => setIsSubscribed(false)} className="w-full">
+              Subscribe Another Email
+            </Button>
+            <Button asChild className="w-full">
+              <a href="/">View Blog</a>
+            </Button>
+          </div>
         </CardContent>
       </Card>
     )
   }
+
 
   return (
     <Card className="w-full max-w-md" id="newsletter">
