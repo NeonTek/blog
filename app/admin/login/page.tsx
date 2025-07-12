@@ -46,7 +46,7 @@ export default function AdminLoginPage() {
 
       router.push("/admin")
       setTimeout(() => {
-        location.reload()
+        window.open("/admin/", "_self")
       }, 500)
     } catch (error) {
       toast({

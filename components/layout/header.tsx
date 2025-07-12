@@ -59,15 +59,10 @@ export default function Header() {
 
     fetchCategories()
 
-    const isAdminLightMode = pathname.startsWith("/admin") && theme === "light"
-    if (isAdminLightMode) {
-      setScrolled(true)
-    }
+  
 
     const handleScroll = () => {
-      if (!isAdminLightMode) {
-        setScrolled(window.scrollY > 50)
-      }
+      setScrolled(window.scrollY > 50)
     }
 
     window.addEventListener("scroll", handleScroll)

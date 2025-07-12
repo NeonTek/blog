@@ -121,7 +121,10 @@ export async function getDailyVisits(days = 30) {
   }
 }
 
-// Get traffic sources
+function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+}
+
 export async function getTrafficSources(days = 30) {
   try {
     await connectDB()
@@ -139,36 +142,41 @@ export async function getTrafficSources(days = 30) {
         $project: {
           source: {
             $cond: [
-              { $eq: ["$referrer", ""] },
-              "direct",
+              {
+                $or: [
+                  { $eq: [{ $toLower: "$referrer" }, ""] },
+                  { $eq: ["$referrer", null] }
+                ]
+              },
+              "Direct",
               {
                 $cond: [
-                  { $regexMatch: { input: "$referrer", regex: /neontek\.co.ke/ } },
+                  { $regexMatch: { input: { $toLower: "$referrer" }, regex: "neontek\\.co\\.ke" } },
                   "Website",
                   {
-                      $cond: [
-                      { $regexMatch: { input: "$referrer", regex: /google\.com/ } },
+                    $cond: [
+                      { $regexMatch: { input: { $toLower: "$referrer" }, regex: "google\\.com" } },
                       "Google",
                       {
                         $cond: [
-                          { $regexMatch: { input: "$referrer", regex: /facebook\.com/ } },
+                          { $regexMatch: { input: { $toLower: "$referrer" }, regex: "facebook\\.com" } },
                           "Facebook",
                           {
                             $cond: [
-                              { $regexMatch: { input: "$referrer", regex: /twitter\.com/ } },
+                              { $regexMatch: { input: { $toLower: "$referrer" }, regex: "twitter\\.com" } },
                               "Twitter",
-                              "Other",
-                            ],
-                          },
-                        ],
-                      },
-                    ],
+                              "Other"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
                   }
-                ],
-              },
-            ],
-          },
-        },
+                ]
+              }
+            ]
+          }
+        }
       },
       {
         $group: {
@@ -178,24 +186,12 @@ export async function getTrafficSources(days = 30) {
       },
     ])
 
-    // Handle explicit direct visits with null or empty referrer
-    const directVisits = await PageView.countDocuments({
-      createdAt: { $gte: startDate },
-      $or: [{ referrer: null }, { referrer: "" }],
-    })
-
-    const result = sources.map((item) => ({
-      source: item._id,
-      count: item.count,
-    }))
-
-    // Add or update 'direct'
-    const directIndex = result.findIndex((s) => s.source === "direct")
-    if (directIndex > -1) {
-      result[directIndex].count += directVisits
-    } else {
-      result.push({ source: "direct", count: directVisits })
-    }
+    const result = sources
+      .filter((item) => item.count > 0) // Optional: remove this line to include 0s
+      .map((item) => ({
+        source: capitalize(item._id),
+        count: item.count,
+      }))
 
     return result
   } catch (error) {

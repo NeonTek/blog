@@ -183,7 +183,7 @@ export function PopularPostsTable({ posts }: PopularPostsTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {posts.map((post) => (
+          {posts.slice(0, 10).map((post) => (
             <TableRow key={post._id}>
               <TableCell>
                 <div className="flex flex-col">

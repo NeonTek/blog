@@ -34,7 +34,7 @@ export default async function AdminDashboard() {
   const draftPosts = posts.filter((post:Post) => !post.published)
 
   return (
-    <div className="container mx-auto px-4 py-8 pt-16">
+    <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
         <div className="flex gap-4">
@@ -106,7 +106,7 @@ export default async function AdminDashboard() {
           <CardContent>
             {posts.length > 0 ? (
               <ul className="space-y-2">
-                {posts.slice(0, 5).map((post: Post) => (
+                {posts.slice(0, 3).map((post: Post) => (
                   <li key={post._id} className="flex items-center justify-between border-b pb-2 w-[80%]">
                     <div className="flex items-center">
                       <span

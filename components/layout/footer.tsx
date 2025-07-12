@@ -2,6 +2,8 @@
 John 1:5
 The light shines in darkness, but the darkness has not understood it 
 */
+"use client"
+
 import {
   Mail,
   Phone,
@@ -13,9 +15,15 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import NewsletterSubscription from "@/components/newsletter/newsletter-subscription";
 
 export default function Footer() {
+  const pathname = usePathname();
+  // 🔒 Hide footer on /admin routes
+  if (pathname.startsWith("/admin")) {
+    return null
+  }
   return (
     <footer className="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300">
       <div className="container mx-auto px-4 py-12">

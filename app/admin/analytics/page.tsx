@@ -151,7 +151,7 @@ export default function AnalyticsDashboard() {
   }, [timeRange, toast])
 
   return (
-    <div className="container mx-auto px-4 py-8 pt-20 overflow-hidden">
+    <div className="container mx-auto px-4 py-8 overflow-hidden">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4 min-w-0">
         <div>
           <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
