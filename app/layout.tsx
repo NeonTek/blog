@@ -62,7 +62,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/x-icon" href="/favicon.png" />
-        {/* Removed AdSense meta and script */}
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5206877931973528" crossOrigin="anonymous"></script>
       </head>
       <body className={inter.className}>
         {/* Gatekeeper Consent Scripts using next/script for better control */}
