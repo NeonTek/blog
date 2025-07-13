@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,6 +41,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Navigation Links */}
         <nav className="space-y-2">
+          <ModeToggle />
           <Button variant="ghost" className="w-full justify-start" asChild>
             <Link href="/admin">
               <LayoutDashboard className="mr-2 h-4 w-4" />
