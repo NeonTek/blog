@@ -11,7 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://blog.neontek.co.ke"
 
   // Base routes
-  const routes = ["", "/about", "/contact"].map((route) => ({
+  const routes = ["", "/"].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
@@ -39,7 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const postRoutes = posts.map((post) => ({
       url: `${baseUrl}/${post.category}/${post.slug}`,
       lastModified: new Date(post.updatedAt),
-      changeFrequency: "monthly" as const,
+      changeFrequency: "daily" as const,
       priority: 0.6,
     }))
 
