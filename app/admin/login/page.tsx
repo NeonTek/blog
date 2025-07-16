@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { Shield, Loader2 } from "lucide-react"
+import { verifyAdminPassword } from "@/lib/actions/admin-login"
 
 export default function AdminLoginPage() {
   const [password, setPassword] = useState("")
@@ -23,21 +24,13 @@ export default function AdminLoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    if (password !== process.env.ADMIN_PASSWORD) {
-      toast({
-        title: "Access Denied",
-        description: "Invalid password",
-        variant: "destructive",
-      })
-      return
-    }
-
     setIsSubmitting(true)
 
     try {
-      // Set admin authentication cookie
-      document.cookie = "admin-auth=authenticated; path=/; max-age=86400" // 24 hours
+      await verifyAdminPassword(password)
+
+      // Set admin authentication cookie (optional; for real auth use JWT or session)
+      document.cookie = "admin-auth=authenticated; path=/; max-age=86400"
 
       toast({
         title: "Success!",
@@ -45,20 +38,16 @@ export default function AdminLoginPage() {
       })
 
       router.push("/admin")
-      setTimeout(() => {
-        window.open("/admin/", "_self")
-      }, 500)
-    } catch (error) {
+    } catch (error: any) {
       toast({
-        title: "Error",
-        description: "Failed to authenticate",
+        title: "Access Denied",
+        description: error.message || "Invalid password",
         variant: "destructive",
       })
     } finally {
       setIsSubmitting(false)
     }
   }
-
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/50">
