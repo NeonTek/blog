@@ -38,6 +38,10 @@ export default function AdminLoginPage() {
       })
 
       router.push("/admin")
+      
+      setTimeout(() => {
+        window.open("/admin/", "_self")
+      }, 500)
     } catch (error: any) {
       toast({
         title: "Access Denied",
