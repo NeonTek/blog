@@ -24,7 +24,7 @@ export default function AdminLoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (password !== process.env.ADMIN_PASSWORD?.toString()) {
+    if (password !== process.env.ADMIN_PASSWORD) {
       toast({
         title: "Access Denied",
         description: "Invalid password",
