@@ -246,11 +246,11 @@ export default function CookieConsentModal() {
           <div className="text-xs text-muted-foreground">
             <p>
               By continuing to use this website, you agree to our{" "}
-              <a href="/privacy-policy" className="underline hover:text-foreground">
+              <a href="https://neontek.co.ke/legal/privacy-policy" className="underline hover:text-foreground">
                 Privacy Policy
               </a>{" "}
               and{" "}
-              <a href="/cookie-policy" className="underline hover:text-foreground">
+              <a href="https://neontek.co.ke/legal/cookie-policy" className="underline hover:text-foreground">
                 Cookie Policy
               </a>
               .
