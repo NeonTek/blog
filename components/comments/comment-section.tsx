@@ -255,6 +255,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
                   {isSubmitting ? "Posting..." : "Post Comment"}
                 </Button>
               </div>
+              <p className="text-muted-foreground mb-4">By commenting, you agree to adhere to <Link href="https://neontek.co.ke/legal/community-guidelines" >our Comminity Guidelines </Link></p>
             </form>
           ) : (
             <div className="text-center py-4">
