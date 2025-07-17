@@ -102,6 +102,8 @@ export default function Footer() {
                 { label: "Portfolio", href: "/portfolio" },
                 { label: "Contact", href: "/contact" },
                 { label: "Blog", href: "/blog" },
+      {label: "Legal", href: "https://neontek.co.ke/legal" }, 
+      
               ].map((link, index) => (
                 <li key={index}>
                   <Link
