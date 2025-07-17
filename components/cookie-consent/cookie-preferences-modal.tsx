@@ -215,11 +215,11 @@ export default function CookiePreferencesModal({ children }: CookiePreferencesMo
             </p>
             <p>
               For more information, please read our{" "}
-              <a href="/privacy-policy" className="underline hover:text-foreground">
+              <a href="https://neontek.co.ke/legal/privacy-policy" className="underline hover:text-foreground">
                 Privacy Policy
               </a>{" "}
               and{" "}
-              <a href="/cookie-policy" className="underline hover:text-foreground">
+              <a href="https://neontek.co.ke/legal/cookie-policy" className="underline hover:text-foreground">
                 Cookie Policy
               </a>
               .
