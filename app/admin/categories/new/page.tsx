@@ -111,7 +111,7 @@ export default function NewCategoryPage() {
                 placeholder="category-slug"
                 disabled={isSubmitting}
               />
-              <p className="text-sm text-muted-foreground">This will be used in URLs: blog.ongoro.top/{slug}</p>
+              <p className="text-sm text-muted-foreground">This will be used in URLs: blog.neontek.co.ke/{slug}</p>
             </div>
 
             <div className="space-y-2">
